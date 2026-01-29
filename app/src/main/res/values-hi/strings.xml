@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">WishMate</string>
+
+    <!-- Login -->
+    <string name="label_mobile_number">मोबाइल नंबर दर्ज करें</string>
+    <string name="btn_send_otp">ओटीपी भेजें</string>
+    <string name="label_enter_otp">ओटीपी दर्ज करें</string>
+    <string name="btn_verify_otp">ओटीपी सत्यापित करें</string>
+    <string name="toast_invalid_number">मान्य 10-अंकों का नंबर दर्ज करें</string>
+    <string name="toast_invalid_otp">ओटीपी गलत है</string>
+
+    <!-- Home / common -->
+    <string name="title_home">WishMate</string>
+    <string name="btn_logout">लॉगआउट</string>
+    <string name="btn_generate_greeting">ग्रीटिंग बनाएँ</string>
+    <string name="btn_share_greeting">शेयर करें</string>
+    <string name="limit_reached_error">दैनिक सीमा समाप्त हो गई है। कल फिर से प्रयास करें।</string>
+
+    <!-- Language -->
+    <string name="label_language">भाषा</string>
+    <string name="label_select_language">भाषा चुनें</string>
+    <string name="title_language_selector">भाषा चुनें</string>
+    <string name="text_choose_language">अपनी पसंदीदा भाषा चुनें:</string>
+
+    <string name="label_choose_tone">टोन चुनें</string>
+
+    <string name="tone_fun">मज़ेदार</string>
+    <string name="tone_minimal">मिनिमल</string>
+    <string name="tone_formal">औपचारिक</string>
+    <string name="tone_emotional">भावनात्मक</string>
+    <string name="tone_poetic">काव्यात्मक</string>
+    <string name="tone_short_sweet">छोटा और प्यारा</string>
+    <string name="share_greeting">शेयर करें</string>
+    <string name="copy_message">संदेश कॉपी करें</string>
+
+    <string name="copied_to_clipboard">संदेश कॉपी हो गया</string>
+
+    <!-- Image picker -->
+    <string name="choose_image_source">फोटो स्रोत चुनें</string>
+    <string name="take_photo">फोटो खींचें</string>
+    <string name="choose_from_gallery">गैलरी से चुनें</string>
+    <string name="browse_stock_images">स्टॉक फोटो देखें</string>
+</resources>

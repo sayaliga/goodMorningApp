@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">WishMate</string>
+
+    <!-- Login -->
+    <string name="label_mobile_number">Enter Mobile Number</string>
+    <string name="btn_send_otp">Send OTP</string>
+    <string name="label_enter_otp">Enter OTP</string>
+    <string name="btn_verify_otp">Verify OTP</string>
+    <string name="toast_invalid_number">Enter valid 10-digit number</string>
+    <string name="toast_invalid_otp">Invalid OTP</string>
+
+    <!-- Home / common -->
+    <string name="title_home">WishMate</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_generate_greeting">Generate Greeting</string>
+    <string name="btn_share_greeting">Share</string>
+    <string name="limit_reached_error">Daily limit reached. Try again tomorrow.</string>
+
+    <!-- Language -->
+    <string name="label_language">Language</string>
+    <string name="label_select_language">Select language</string>
+    <string name="title_language_selector">Select Language</string>
+    <string name="text_choose_language">Choose your preferred language:</string>
+
+    <string name="label_choose_tone">Choose a tone</string>
+    <string name="tone_fun">Fun</string>
+    <string name="tone_minimal">Minimal</string>
+    <string name="tone_formal">Formal</string>
+    <string name="tone_emotional">Emotional</string>
+    <string name="tone_poetic">Poetic</string>
+    <string name="tone_short_sweet">Short &amp; Sweet</string>
+    <string name="share_greeting">Share</string>
+    <string name="copy_message">Copy Message</string>
+
+    <string name="copied_to_clipboard">Message copied to clipboard</string>
+
+    <!-- Image picker -->
+    <string name="choose_image_source">Choose Image Source</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="browse_stock_images">Browse Stock Images</string>
+</resources>
