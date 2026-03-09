@@ -4,17 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.goodmorning.app.core.ui.theme.GoodMorningTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +21,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StartupConsole.log("MainActivity created")
         setContent {
             GoodMorningTheme {
                 Surface(
@@ -36,12 +31,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        StartupConsole.log("Compose content attached")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        StartupConsole.log("MainActivity started")
     }
 }
 
@@ -53,13 +42,5 @@ fun GreetingScreen(viewModel: GreetingViewModel) {
 
 @Composable
 fun GreetingContent(uiState: GreetingUiState) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 24.dp),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        StartupConsolePanel()
-        com.goodmorning.app.core.ui.components.Greeting(uiState.message)
-    }
+    com.goodmorning.app.core.ui.components.Greeting(uiState.message)
 }
