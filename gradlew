@@ -1,40 +1,45 @@
-#!/usr/bin/env sh
-
-##############################################################################
-# Custom minimal Gradle wrapper launcher
-##############################################################################
+#!/usr/bin/env bash
 
 set -euo pipefail
 
-APP_HOME="$(cd "$(dirname "$0")"; pwd -P)"
-WRAPPER_JAR="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
-WRAPPER_VERSION="8.2"
-WRAPPER_URL="https://repo.gradle.org/gradle/libs-releases-local/org/gradle/gradle-wrapper/${WRAPPER_VERSION}/gradle-wrapper-${WRAPPER_VERSION}.jar"
-MAIN_CLASS="org.gradle.wrapper.GradleWrapperMain"
+APP_HOME="$(cd "$(dirname "$0")" && pwd -P)"
+WRAPPER_PROPS="$APP_HOME/gradle/wrapper/gradle-wrapper.properties"
 
-if [ ! -f "$WRAPPER_JAR" ]; then
-  mkdir -p "$(dirname "$WRAPPER_JAR")"
-  echo "Gradle wrapper JAR not found, downloading ${WRAPPER_VERSION}..." >&2
-  if command -v curl >/dev/null 2>&1; then
-    curl --fail --location --output "${WRAPPER_JAR}.tmp" "$WRAPPER_URL"
-  elif command -v wget >/dev/null 2>&1; then
-    wget --output-document="${WRAPPER_JAR}.tmp" "$WRAPPER_URL"
-  else
-    echo "Neither curl nor wget is available to download the Gradle wrapper." >&2
-    exit 1
-  fi
-  mv "${WRAPPER_JAR}.tmp" "$WRAPPER_JAR"
-fi
-
-if [ -n "${JAVA_HOME:-}" ]; then
-  JAVA_CMD="$JAVA_HOME/bin/java"
-else
-  JAVA_CMD=$(command -v java 2>/dev/null || true)
-fi
-
-if [ -z "${JAVA_CMD:-}" ] || [ ! -x "$JAVA_CMD" ]; then
-  echo "Java runtime could not be found. Please set JAVA_HOME." >&2
+if [[ ! -f "$WRAPPER_PROPS" ]]; then
+  echo "Gradle wrapper properties not found: $WRAPPER_PROPS" >&2
   exit 1
 fi
 
-exec "$JAVA_CMD" -cp "$WRAPPER_JAR" "$MAIN_CLASS" "$@"
+DISTRIBUTION_URL=$(grep '^distributionUrl=' "$WRAPPER_PROPS" | cut -d= -f2- | sed 's#\\:#:#g')
+if [[ -z "${DISTRIBUTION_URL:-}" ]]; then
+  echo "distributionUrl is missing in $WRAPPER_PROPS" >&2
+  exit 1
+fi
+
+DIST_NAME="$(basename "$DISTRIBUTION_URL")"
+DIST_BASENAME="${DIST_NAME%.zip}"
+DIST_DIR="$HOME/.gradle-wrapper-cache/$DIST_BASENAME"
+ZIP_PATH="$HOME/.gradle-wrapper-cache/$DIST_NAME"
+GRADLE_BIN=$(find "$DIST_DIR" -path '*/bin/gradle' -type f 2>/dev/null | head -n 1 || true)
+
+mkdir -p "$HOME/.gradle-wrapper-cache"
+
+if [[ -z "$GRADLE_BIN" || ! -x "$GRADLE_BIN" ]]; then
+  if [[ ! -f "$ZIP_PATH" ]]; then
+    echo "Downloading Gradle distribution: $DISTRIBUTION_URL" >&2
+    curl --fail --location --output "$ZIP_PATH.tmp" "$DISTRIBUTION_URL"
+    mv "$ZIP_PATH.tmp" "$ZIP_PATH"
+  fi
+
+  rm -rf "$DIST_DIR"
+  mkdir -p "$DIST_DIR"
+  unzip -q "$ZIP_PATH" -d "$DIST_DIR"
+  GRADLE_BIN=$(find "$DIST_DIR" -path '*/bin/gradle' -type f | head -n 1 || true)
+fi
+
+if [[ -z "$GRADLE_BIN" || ! -x "$GRADLE_BIN" ]]; then
+  echo "Unable to bootstrap Gradle from $DISTRIBUTION_URL" >&2
+  exit 1
+fi
+
+exec "$GRADLE_BIN" "$@"
