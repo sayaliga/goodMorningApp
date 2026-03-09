@@ -41,7 +41,7 @@ fun ShareSheetScreen(
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = selectedTemplate.tone.instruction,
+            text = selectedTemplate.tone.selectorLabel,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

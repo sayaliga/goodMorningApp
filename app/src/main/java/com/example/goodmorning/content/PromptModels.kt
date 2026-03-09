@@ -1,24 +1,24 @@
 package com.example.goodmorning.content
 
 enum class GenerationTone(
-    val label: String,
-    val instruction: String
+    val selectorLabel: String,
+    val promptInstruction: String
 ) {
-    PLAYFUL_LIGHT(
-        label = "Playful light",
-        instruction = "Write one sentence that feels playful and warm, with a light flirtiness, while avoiding childish jokes, slang overload, or anything that sounds forced."
+    WARM(
+        selectorLabel = "Warm",
+        promptInstruction = "Make it emotionally warm, natural, and easy to receive, with clean modern wording and no generic filler, robotic softness, or flat phrasing."
     ),
-    CLEAN_WARM(
-        label = "Clean warm",
-        instruction = "Write one sentence that feels concise, polished, and emotionally warm, using simple language without sounding cold, robotic, or flat."
+    PLAYFUL(
+        selectorLabel = "Playful",
+        promptInstruction = "Make it light, charming, and slightly flirty, with natural energy and no childish humor, meme language, or anything that feels try-hard."
     ),
-    ROMANTIC_GROUNDED(
-        label = "Romantic grounded",
-        instruction = "Write one sentence that feels romantic and sincere, with real emotional weight, while avoiding cheesy metaphors, exaggeration, or overly dramatic phrasing."
+    ROMANTIC(
+        selectorLabel = "Romantic",
+        promptInstruction = "Make it intimate, sincere, and emotionally grounded, with genuine affection and no cheesy metaphors, dramatic exaggeration, or predictable clichés."
     ),
-    CONFIDENT_SOFT(
-        label = "Confident soft",
-        instruction = "Write one sentence that feels confident, calm, and attractive, with gentle emotional clarity and no aggressive, pushy, or overly poetic language."
+    POISED(
+        selectorLabel = "Poised",
+        promptInstruction = "Make it smooth, confident, and emotionally clear, with a calm attractive tone and no pushiness, arrogance, or overly poetic wording."
     )
 }
 
@@ -28,9 +28,11 @@ data class PromptTemplate(
     val tone: GenerationTone
 ) {
     fun buildPrompt(): String = buildString {
-        appendLine("You are generating a short Wishmate text.")
+        appendLine("You are generating a Wishmate message.")
         appendLine("Goal: $useCase")
-        appendLine("Tone instruction: ${tone.instruction}")
+        appendLine("Tone: ${tone.promptInstruction}")
+        appendLine("Quality bar: the line should feel personal, specific in emotion, smooth to read, and immediately sendable.")
+        appendLine("Avoid anything cheesy, generic, cringe, stiff, overly formal, or obviously AI-written.")
         append("Output exactly one sentence.")
     }
 }
@@ -39,21 +41,21 @@ val samplePromptTemplates = listOf(
     PromptTemplate(
         title = "Morning spark",
         useCase = "Send a sweet good-morning text that feels fresh and easy to reply to.",
-        tone = GenerationTone.PLAYFUL_LIGHT
+        tone = GenerationTone.PLAYFUL
     ),
     PromptTemplate(
         title = "Soft reassurance",
         useCase = "Send a calming text that makes the other person feel seen and cared for.",
-        tone = GenerationTone.CLEAN_WARM
+        tone = GenerationTone.WARM
     ),
     PromptTemplate(
         title = "Heartfelt check-in",
         useCase = "Send a romantic message that feels intimate, genuine, and emotionally present.",
-        tone = GenerationTone.ROMANTIC_GROUNDED
+        tone = GenerationTone.ROMANTIC
     ),
     PromptTemplate(
         title = "Smooth follow-up",
         useCase = "Send a confident message that keeps momentum without sounding needy or performative.",
-        tone = GenerationTone.CONFIDENT_SOFT
+        tone = GenerationTone.POISED
     )
 )

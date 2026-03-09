@@ -54,12 +54,12 @@ fun TemplateGalleryScreen(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = template.tone.label,
+                        text = template.tone.selectorLabel,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = template.tone.instruction,
+                        text = template.tone.promptInstruction,
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 5,
                         overflow = TextOverflow.Ellipsis,
