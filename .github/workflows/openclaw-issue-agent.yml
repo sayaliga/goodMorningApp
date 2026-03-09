@@ -1,0 +1,33 @@
+name: Trigger OpenClaw on new issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  notify-openclaw:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: issue-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - name: Call OpenClaw webhook
+        env:
+          OPENCLAW_URL: ${{ secrets.OPENCLAW_URL }}
+          OPENCLAW_HOOK_TOKEN: ${{ secrets.OPENCLAW_HOOK_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          REPO: ${{ github.repository }}
+        run: |
+          curl -X POST "${OPENCLAW_URL}/hooks/agent" \
+            -H "Authorization: Bearer ${OPENCLAW_HOOK_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d @- <<JSON
+          {
+            "agentId": "developer-wishmate",
+            "wakeMode": "now",
+            "message": "Project: Wishmate\nRepository: goodmorningapp\nRepository path: /workspace/goodmorningapp\n\nA new GitHub issue was opened.\n\nIssue #${ISSUE_NUMBER}\nTitle: ${ISSUE_TITLE}\nURL: ${ISSUE_URL}\n\nBody:\n${ISSUE_BODY}\n\nPlease do the following:\n1. Read /home/node/.openclaw/workspace/developer/wishmate/AGENT.md\n2. Create a branch from master\n3. Implement the fix in /workspace/goodmorningapp\n4. Run relevant Gradle checks\n5. Commit and push the branch\n6. Notify me on Slack after every major step\n7. Do not push directly to master unless explicitly instructed"
+          }
+JSON
