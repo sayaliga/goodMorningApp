@@ -43,8 +43,8 @@ android {
         applicationId = "com.sayali.wishmate"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
-        versionName = "14.0"
+        versionCode = 15
+        versionName = "15.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField(
