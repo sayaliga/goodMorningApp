@@ -5,9 +5,16 @@ object CaptionPromptBuilder {
         occasion: String,
         topic: String,
         toneInstruction: String,
-        language: String
+        language: String,
+        additionalInstructions: String = ""
     ): String {
         val normalizedTopic = topic.trim().ifBlank { "general" }
+        val normalizedInstructions = additionalInstructions.trim()
+        val additionalInstructionsBlock = if (normalizedInstructions.isNotEmpty()) {
+            "- Additional user instructions: $normalizedInstructions\n"
+        } else {
+            ""
+        }
 
         return """
             You write short greeting messages for social sharing.
@@ -18,6 +25,7 @@ object CaptionPromptBuilder {
             - Tone: $toneInstruction
             - Language: $language
             - Audience: Indian users sharing on WhatsApp and social apps
+            $additionalInstructionsBlock
 
             Writing goals:
             - Sound warm, natural, and human

@@ -50,6 +50,7 @@ fun EditorScreen(
     val session = remember { SessionManager(ctx) }
     var selectedToneId by remember { mutableStateOf("fun") }
     var showSheet by remember { mutableStateOf(false) }
+    var additionalInstructions by remember { mutableStateOf("") }
 
     val tones = listOf(
         "fun" to stringResource(R.string.tone_fun),
@@ -74,6 +75,9 @@ fun EditorScreen(
     val limitReachedErrorText = stringResource(R.string.limit_reached_error)
 //    val shareToOthersText = stringResource(R.string.share_other_apps)
     val copyToClipBoardText = stringResource(R.string.copy_message)
+    val additionalInstructionsLabel = stringResource(R.string.label_additional_instructions)
+    val additionalInstructionsHint = stringResource(R.string.hint_additional_instructions)
+    val additionalInstructionsLimitText = stringResource(R.string.additional_instructions_limit)
 
     val clipboardManager = LocalClipboardManager.current
 
@@ -426,6 +430,28 @@ fun EditorScreen(
 
                         Spacer(Modifier.height(12.dp))
 
+                        OutlinedTextField(
+                            value = additionalInstructions,
+                            onValueChange = {
+                                additionalInstructions = it.take(200)
+                            },
+                            label = { Text(additionalInstructionsLabel) },
+                            placeholder = { Text(additionalInstructionsHint) },
+                            supportingText = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(additionalInstructionsLimitText)
+                                    Text("${additionalInstructions.length}/200")
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = false,
+                            minLines = 2,
+                            maxLines = 4
+                        )
+
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
                             // Generate caption
@@ -442,7 +468,8 @@ fun EditorScreen(
                                                             occasion = prompt.display,
                                                             topic = searchTerm,
                                                             toneInstruction = toneInstruction,
-                                                            language = prompt.language
+                                                            language = prompt.language,
+                                                            additionalInstructions = additionalInstructions
                                                         ),
                                                         prompt.language
                                                     )

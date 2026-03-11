@@ -31,6 +31,9 @@
     <string name="tone_short_sweet">Short &amp; Sweet</string>
     <string name="share_greeting">Share</string>
     <string name="copy_message">Copy Message</string>
+    <string name="label_additional_instructions">Additional instructions</string>
+    <string name="hint_additional_instructions">Optional: add any specific guidance for the message</string>
+    <string name="additional_instructions_limit">Max 200 characters</string>
 
     <string name="copied_to_clipboard">Message copied to clipboard</string>
 
