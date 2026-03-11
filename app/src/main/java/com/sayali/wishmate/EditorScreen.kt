@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.sayali.wishmate.ai.CaptionPromptBuilder
 import com.sayali.wishmate.ai.TextGenerator
 import com.sayali.wishmate.data.CaptionTemplates
 import com.sayali.wishmate.share.ShareUtils
@@ -437,31 +438,12 @@ fun EditorScreen(
                                                     isGenerating = true
 
                                                     val aiText = TextGenerator.generateCaption(
-                                                        "You are writing a wish to be shared over social channels for particular occasions.\n" +
-                                                                "\n" +
-                                                                "Occasion: ${prompt.display}\n" +
-                                                                "Topic/keywords: ${searchTerm.ifBlank { "general" }}\n" +
-                                                                "Message Tone: $toneInstruction\n" +
-                                                                "Language: ${prompt.language}\n" +
-                                                                "\n" +
-                                                                "Hard rules:\n" +
-                                                                "- Output ONLY the final text.\n" +
-                                                                "- Length: 3 lines maximum.\n" +
-                                                                "- Use emojis, but limit to 1–2 emojis only.\n" +
-                                                                "- Emojis must feel natural and relevant to the message.\n" +
-                                                                "- Do NOT place emojis between every word.\n" +
-                                                                "- Emojis can be at the end or gently integrated in the sentence.\n" +
-                                                                "- Do NOT use hashtags, @mentions, links, or phone numbers.\n" +
-                                                                "- Do NOT mention AI, prompts, or generation.\n" +
-                                                                "- Avoid offensive, political, religiously divisive, or adult content.\n" +
-                                                                "- Avoid heavy slang and internet shorthand.\n" +
-                                                                "- No ALL CAPS.\n" +
-                                                                "\n" +
-                                                                "- If no topic is provided: keep it warm and generic.\n" +
-                                                                "- Keep it suitable for Indian audiences and WhatsApp sharing.\n" +
-                                                                "\n" +
-                                                                "Return exactly ONE message. No quotes, no bullet points, no explanations.\n" +
-                                                                ")\n",
+                                                        CaptionPromptBuilder.build(
+                                                            occasion = prompt.display,
+                                                            topic = searchTerm,
+                                                            toneInstruction = toneInstruction,
+                                                            language = prompt.language
+                                                        ),
                                                         prompt.language
                                                     )
 
