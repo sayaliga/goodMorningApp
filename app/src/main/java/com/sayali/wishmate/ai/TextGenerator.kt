@@ -32,7 +32,15 @@ object TextGenerator {
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) return@withContext null
-                response.body?.string()?.trim()
+
+                response.body
+                    ?.string()
+                    ?.trim()
+                    ?.removePrefix("\"")
+                    ?.removeSuffix("\"")
+                    ?.replace("\\n", "\n")
+                    ?.trim()
+                    ?.takeIf { it.isNotBlank() }
             }
         }
 }

@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.sayali.wishmate.ai.CaptionPromptBuilder
 import com.sayali.wishmate.ai.TextGenerator
 import com.sayali.wishmate.data.CaptionTemplates
 import com.sayali.wishmate.share.ShareUtils
@@ -49,6 +50,7 @@ fun EditorScreen(
     val session = remember { SessionManager(ctx) }
     var selectedToneId by remember { mutableStateOf("fun") }
     var showSheet by remember { mutableStateOf(false) }
+    var additionalInstructions by remember { mutableStateOf("") }
 
     val tones = listOf(
         "fun" to stringResource(R.string.tone_fun),
@@ -73,6 +75,9 @@ fun EditorScreen(
     val limitReachedErrorText = stringResource(R.string.limit_reached_error)
 //    val shareToOthersText = stringResource(R.string.share_other_apps)
     val copyToClipBoardText = stringResource(R.string.copy_message)
+    val additionalInstructionsLabel = stringResource(R.string.label_additional_instructions)
+    val additionalInstructionsHint = stringResource(R.string.hint_additional_instructions)
+    val additionalInstructionsLimitText = stringResource(R.string.additional_instructions_limit)
 
     val clipboardManager = LocalClipboardManager.current
 
@@ -425,6 +430,28 @@ fun EditorScreen(
 
                         Spacer(Modifier.height(12.dp))
 
+                        OutlinedTextField(
+                            value = additionalInstructions,
+                            onValueChange = {
+                                additionalInstructions = it.take(200)
+                            },
+                            label = { Text(additionalInstructionsLabel) },
+                            placeholder = { Text(additionalInstructionsHint) },
+                            supportingText = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(additionalInstructionsLimitText)
+                                    Text("${additionalInstructions.length}/200")
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = false,
+                            minLines = 2,
+                            maxLines = 4
+                        )
+
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
                             // Generate caption
@@ -437,31 +464,13 @@ fun EditorScreen(
                                                     isGenerating = true
 
                                                     val aiText = TextGenerator.generateCaption(
-                                                        "You are writing a wish to be shared over social channels for particular occasions.\n" +
-                                                                "\n" +
-                                                                "Occasion: ${prompt.display}\n" +
-                                                                "Topic/keywords: ${searchTerm.ifBlank { "general" }}\n" +
-                                                                "Message Tone: $toneInstruction\n" +
-                                                                "Language: ${prompt.language}\n" +
-                                                                "\n" +
-                                                                "Hard rules:\n" +
-                                                                "- Output ONLY the final text.\n" +
-                                                                "- Length: 3 lines maximum.\n" +
-                                                                "- Use emojis, but limit to 1–2 emojis only.\n" +
-                                                                "- Emojis must feel natural and relevant to the message.\n" +
-                                                                "- Do NOT place emojis between every word.\n" +
-                                                                "- Emojis can be at the end or gently integrated in the sentence.\n" +
-                                                                "- Do NOT use hashtags, @mentions, links, or phone numbers.\n" +
-                                                                "- Do NOT mention AI, prompts, or generation.\n" +
-                                                                "- Avoid offensive, political, religiously divisive, or adult content.\n" +
-                                                                "- Avoid heavy slang and internet shorthand.\n" +
-                                                                "- No ALL CAPS.\n" +
-                                                                "\n" +
-                                                                "- If no topic is provided: keep it warm and generic.\n" +
-                                                                "- Keep it suitable for Indian audiences and WhatsApp sharing.\n" +
-                                                                "\n" +
-                                                                "Return exactly ONE message. No quotes, no bullet points, no explanations.\n" +
-                                                                ")\n",
+                                                        CaptionPromptBuilder.build(
+                                                            occasion = prompt.display,
+                                                            topic = searchTerm,
+                                                            toneInstruction = toneInstruction,
+                                                            language = prompt.language,
+                                                            additionalInstructions = additionalInstructions
+                                                        ),
                                                         prompt.language
                                                     )
 

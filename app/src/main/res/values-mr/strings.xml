@@ -32,6 +32,9 @@
     <string name="tone_short_sweet">लहान आणि सुंदर</string>
     <string name="share_greeting">शेअर करा</string>
     <string name="copy_message">संदेश कॉपी करा</string>
+    <string name="label_additional_instructions">अतिरिक्त सूचना</string>
+    <string name="hint_additional_instructions">ऐच्छिक: संदेशासाठी काही खास सूचना जोडा</string>
+    <string name="additional_instructions_limit">जास्तीत जास्त 200 अक्षरे</string>
 
     <string name="copied_to_clipboard">संदेश कॉपी झाला</string>
 
